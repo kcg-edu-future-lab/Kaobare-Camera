@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using OpenCvSharp;
@@ -33,9 +34,14 @@ namespace KaobareCamera
 			if (!capture.IsOpened()) return;
 
 			using var frame = new Mat();
+			var dt = DateTime.Now;
 			while (true)
 			{
 				if (!capture.Read(frame) || frame.Empty()) continue;
+
+				var fps = 1 / (DateTime.Now - dt).TotalSeconds;
+				Debug.WriteLine($"FPS: {fps}");
+				dt = DateTime.Now;
 
 				Application.Current.Dispatcher.Invoke(() => UpdateOriginalImage(frame));
 			}
