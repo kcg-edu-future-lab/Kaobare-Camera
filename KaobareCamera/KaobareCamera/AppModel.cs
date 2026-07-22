@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using OpenCvSharp;
 
 namespace KaobareCamera
@@ -17,9 +18,13 @@ namespace KaobareCamera
 		public bool IsInDesignMode { get; set; }
 		public WriteableBitmap Bitmap { get; } = new WriteableBitmap(CameraWidth, CameraHeight, 96, 96, PixelFormats.Bgr24, null);
 
+		readonly Dispatcher uiDispatcher;
+
 		public AppModel()
 		{
-			Task.Run(CaptureCamera);
+			uiDispatcher = Dispatcher.CurrentDispatcher;
+			Task.Delay(200)
+				.ContinueWith(_ => CaptureCamera());
 		}
 
 		void CaptureCamera()
@@ -43,7 +48,7 @@ namespace KaobareCamera
 				Debug.WriteLine($"FPS: {fps}");
 				dt = DateTime.Now;
 
-				Application.Current.Dispatcher.Invoke(() => UpdateOriginalImage(frame));
+				uiDispatcher.Invoke(() => UpdateOriginalImage(frame));
 			}
 		}
 
