@@ -19,6 +19,7 @@ namespace KaobareCamera
 		public WriteableBitmap Bitmap { get; } = new WriteableBitmap(CameraWidth, CameraHeight, 96, 96, PixelFormats.Bgr24, null);
 
 		readonly Dispatcher uiDispatcher;
+		bool isOn = true;
 
 		public AppModel()
 		{
@@ -40,7 +41,8 @@ namespace KaobareCamera
 
 			using var frame = new Mat();
 			var dt = DateTime.Now;
-			while (true)
+
+			while (isOn)
 			{
 				if (!capture.Read(frame) || frame.Empty()) continue;
 
@@ -60,6 +62,12 @@ namespace KaobareCamera
 				frame.Height * (int)frame.Step(),
 				(int)frame.Step()
 			);
+		}
+
+		public void Close()
+		{
+			isOn = false;
+			Task.Delay(200).Wait();
 		}
 	}
 }

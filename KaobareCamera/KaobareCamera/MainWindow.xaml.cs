@@ -19,6 +19,10 @@ namespace KaobareCamera
 		public MainWindow()
 		{
 			InitializeComponent();
+
+			var appModel = (AppModel)DataContext;
+
+			Closing += (o, e) => appModel.Close();
 		}
 	}
 }
