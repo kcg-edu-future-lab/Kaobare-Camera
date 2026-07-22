@@ -33,9 +33,12 @@ namespace KaobareCamera
 			if (IsInDesignMode) return;
 
 			using var capture = new VideoCapture(CameraIndex, VideoCaptureAPIs.DSHOW);
-			capture.Set(VideoCaptureProperties.FrameWidth, CameraWidth);
-			capture.Set(VideoCaptureProperties.FrameHeight, CameraHeight);
-			capture.Set(VideoCaptureProperties.Fps, CameraFps);
+
+			// 既定で 640 x 480
+			// FPS の設定は反映されないようです。
+			//capture.FrameWidth = CameraWidth;
+			//capture.FrameHeight = CameraHeight;
+			//capture.Fps = CameraFps;
 
 			if (!capture.IsOpened()) return;
 
