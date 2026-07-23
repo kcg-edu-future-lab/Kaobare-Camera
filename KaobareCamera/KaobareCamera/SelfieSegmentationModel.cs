@@ -58,29 +58,26 @@ public sealed class SelfieSegmentationModel : IDisposable
         Cv2.GaussianBlur(mask, mask, new Size(7, 7), 0);
 
         var bgra = new Mat(bgrFrame.Rows, bgrFrame.Cols, MatType.CV_8UC4);
-        unsafe
+        for (int y = 0; y < bgrFrame.Rows; y++)
         {
-            for (int y = 0; y < bgrFrame.Rows; y++)
+            Span<byte> src = bgrFrame.Row(y).AsSpan<byte>();
+            Span<byte> m = mask.Row(y).AsSpan<byte>();
+            Span<byte> dst = bgra.Row(y).AsSpan<byte>();
+
+            for (int x = 0; x < bgrFrame.Cols; x++)
             {
-                byte* src = (byte*)bgrFrame.Ptr(y).ToPointer();
-                byte* m = (byte*)mask.Ptr(y).ToPointer();
-                byte* dst = (byte*)bgra.Ptr(y).ToPointer();
+                byte b = src[x * 3 + 0];
+                byte g = src[x * 3 + 1];
+                byte r = src[x * 3 + 2];
+                byte a = m[x];
 
-                for (int x = 0; x < bgrFrame.Cols; x++)
-                {
-                    byte b = src[x * 3 + 0];
-                    byte g = src[x * 3 + 1];
-                    byte r = src[x * 3 + 2];
-                    byte a = m[x];
+                // threshold 未満は完全透明、以上は alpha として使う
+                if (a < threshold * 255.0) a = 0;
 
-                    // threshold 未満は完全透明、以上は alpha として使う
-                    if (a < threshold * 255.0) a = 0;
-
-                    dst[x * 4 + 0] = b;
-                    dst[x * 4 + 1] = g;
-                    dst[x * 4 + 2] = r;
-                    dst[x * 4 + 3] = a;
-                }
+                dst[x * 4 + 0] = b;
+                dst[x * 4 + 1] = g;
+                dst[x * 4 + 2] = r;
+                dst[x * 4 + 3] = a;
             }
         }
         return bgra;
@@ -128,20 +125,17 @@ public sealed class SelfieSegmentationModel : IDisposable
         int outH = side * side == pixelCount ? side : Math.Max(1, pixelCount / outW);
 
         var mask = new Mat(outH, outW, MatType.CV_8UC1);
-        unsafe
+        for (int y = 0; y < outH; y++)
         {
-            for (int y = 0; y < outH; y++)
+            Span<byte> dst = mask.Row(y).AsSpan<byte>();
+            for (int x = 0; x < outW; x++)
             {
-                byte* dst = (byte*)mask.Ptr(y).ToPointer();
-                for (int x = 0; x < outW; x++)
-                {
-                    int i = Math.Min(y * outW + x, output.Length - 1);
-                    float v = output[i];
-                    // logits らしき値なら sigmoid、0..1 ならそのまま
-                    if (v < 0 || v > 1) v = 1.0f / (1.0f + MathF.Exp(-v));
-                    v = Math.Clamp(v, 0f, 1f);
-                    dst[x] = (byte)(v * 255.0f);
-                }
+                int i = Math.Min(y * outW + x, output.Length - 1);
+                float v = output[i];
+                // logits らしき値なら sigmoid、0..1 ならそのまま
+                if (v < 0 || v > 1) v = 1.0f / (1.0f + MathF.Exp(-v));
+                v = Math.Clamp(v, 0f, 1f);
+                dst[x] = (byte)(v * 255.0f);
             }
         }
         return mask;

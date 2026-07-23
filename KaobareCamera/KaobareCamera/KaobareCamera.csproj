@@ -11,7 +11,6 @@
     <Authors>Keiho Sakapon</Authors>
     <Copyright>© 2026 Keiho Sakapon</Copyright>
     <PackageReleaseNotes>The first release.</PackageReleaseNotes>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
