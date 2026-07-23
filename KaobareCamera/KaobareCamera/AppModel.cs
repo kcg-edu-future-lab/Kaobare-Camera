@@ -43,15 +43,14 @@ namespace KaobareCamera
 			if (!capture.IsOpened()) return;
 
 			using var frame = new Mat();
-			var dt = DateTime.Now;
+			var frameRate = new FrameRateManager(CameraFps);
 
 			while (isOn)
 			{
 				if (!capture.Read(frame) || frame.Empty()) continue;
 
-				var fps = 1 / (DateTime.Now - dt).TotalSeconds;
-				Debug.WriteLine($"FPS: {fps}");
-				dt = DateTime.Now;
+				if (!frameRate.IsAvailable()) continue;
+				Debug.WriteLine($"FPS: {frameRate.ActualFps}");
 
 				uiDispatcher.Invoke(() => UpdateOriginalImage(frame));
 			}
