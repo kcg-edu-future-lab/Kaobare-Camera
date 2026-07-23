@@ -16,7 +16,10 @@ namespace KaobareCamera
 		const double MaskThreshold = 0.35;
 
 		public bool IsInDesignMode { get; set; }
-		public WriteableBitmap Bitmap { get; } = new WriteableBitmap(CameraWidth, CameraHeight, 96, 96, PixelFormats.Bgr24, null);
+
+		// カメラから取得した映像: PixelFormats.Bgr24
+		// 背景を除去した映像: PixelFormats.Bgra32
+		public WriteableBitmap Bitmap { get; } = new WriteableBitmap(CameraWidth, CameraHeight, 96, 96, PixelFormats.Bgra32, null);
 
 		readonly Dispatcher uiDispatcher;
 		bool isOn = true;
@@ -32,6 +35,7 @@ namespace KaobareCamera
 		{
 			if (IsInDesignMode) return;
 
+			using var segmentation = new SelfieSegmentationModel("./Assets/selfie_segmentation.onnx");
 			using var capture = new VideoCapture(CameraIndex, VideoCaptureAPIs.DSHOW);
 
 			// 既定で 640 x 480
@@ -52,11 +56,12 @@ namespace KaobareCamera
 				if (!frameRate.IsAvailable()) continue;
 				Debug.WriteLine($"FPS: {frameRate.ActualFps}");
 
-				uiDispatcher.Invoke(() => UpdateOriginalImage(frame));
+				var bgra = segmentation.RemoveBackground(frame, MaskThreshold);
+				uiDispatcher.Invoke(() => UpdateImage(bgra));
 			}
 		}
 
-		void UpdateOriginalImage(Mat frame)
+		void UpdateImage(Mat frame)
 		{
 			Bitmap.WritePixels(
 				new Int32Rect(0, 0, frame.Width, frame.Height),
