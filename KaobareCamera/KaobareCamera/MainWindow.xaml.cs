@@ -22,6 +22,7 @@ namespace KaobareCamera
 
 			var appModel = (AppModel)DataContext;
 
+			MouseLeftButtonDown += (o, e) => DragMove();
 			Closing += (o, e) => appModel.Close();
 		}
 	}

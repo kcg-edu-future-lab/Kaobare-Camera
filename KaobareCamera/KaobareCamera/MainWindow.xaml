@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KaobareCamera"
         mc:Ignorable="d"
-        Title="Kao-Bare Camera" Height="450" Width="800">
+        Title="Kao-Bare Camera" Height="480" Width="720" MinHeight="80" MinWidth="120"
+        AllowsTransparency="True" SnapsToDevicePixels="True" Topmost="True" WindowStyle="None" Background="Transparent">
     <Window.DataContext>
         <local:AppModel d:IsInDesignMode="True"/>
     </Window.DataContext>
