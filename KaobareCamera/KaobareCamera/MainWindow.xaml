@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="Kao-Bare Camera" Height="480" Width="720" MinHeight="80" MinWidth="120"
         AllowsTransparency="True" SnapsToDevicePixels="True" Topmost="True" WindowStyle="None" Background="Transparent">
+    <Window.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="終了 (_X)" Click="MenuExit_Click"/>
+        </ContextMenu>
+    </Window.ContextMenu>
     <Window.DataContext>
         <local:AppModel d:IsInDesignMode="True"/>
     </Window.DataContext>

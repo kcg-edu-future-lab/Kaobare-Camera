@@ -25,5 +25,10 @@ namespace KaobareCamera
 			MouseLeftButtonDown += (o, e) => DragMove();
 			Closing += (o, e) => appModel.Close();
 		}
+
+		void MenuExit_Click(object sender, RoutedEventArgs e)
+		{
+			Close();
+		}
 	}
 }
