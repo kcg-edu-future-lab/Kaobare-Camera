@@ -4,7 +4,24 @@
 
 配信中にこのアプリを起動すると、なんと顔バレすることができて有名になる可能性があります。
 
-## 仕様
+## Specification
 - PC のカメラから映像を取得し、人物を表示して背景を除去します。
 
-(開発中)
+## Usage
+- [Releases](https://github.com/kcg-edu-future-lab/Kaobare-Camera/releases) から最新版の `KaobareCamera-x.y.z.zip` をダウンロードして展開し、その中の `KaobareCamera.exe` を実行します。
+
+## Runtime Environments
+- Windows 11 or later
+  - [.NET 10.0](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0/runtime) or later
+
+## Release Notes
+- **v1.0.5** The first release.
+
+## Third-Party Libraries
+- [Reactive Extensions](https://github.com/dotnet/reactive)
+- [ReactiveProperty](https://github.com/runceel/ReactiveProperty)
+- [ONNX Runtime](https://github.com/Microsoft/onnxruntime)
+- [OpenCvSharp](https://github.com/shimat/opencvsharp)
+
+## Third-Party Content
+- [MediaPipe Selfie Segmentation](https://huggingface.co/onnx-community/mediapipe_selfie_segmentation)
