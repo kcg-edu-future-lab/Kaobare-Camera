@@ -12,7 +12,7 @@ namespace KaobareCamera
 		const int CameraIndex = 0;
 		const int CameraWidth = 640;
 		const int CameraHeight = 480;
-		const int CameraFps = 30;
+		const int CameraFps = 15;
 		const double MaskThreshold = 0.35;
 
 		public bool IsInDesignMode { get; set; }
