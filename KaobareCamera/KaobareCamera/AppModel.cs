@@ -57,7 +57,7 @@ namespace KaobareCamera
 				Debug.WriteLine($"FPS: {frameRate.ActualFps}");
 
 				var bgra = segmentation.RemoveBackground(frame, MaskThreshold);
-				uiDispatcher.Invoke(() => UpdateImage(bgra));
+				uiDispatcher.BeginInvoke(() => UpdateImage(bgra));
 			}
 		}
 
