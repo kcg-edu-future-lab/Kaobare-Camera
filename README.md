@@ -12,7 +12,7 @@
 
 ## Runtime Environments
 - Windows 11 or later
-  - [.NET 10.0](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0/runtime) or later
+  - [.NET 10.0](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0/runtime)
 
 ## Release Notes
 - **v1.0.6** CPU 使用率を改善。
