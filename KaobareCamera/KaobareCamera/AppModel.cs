@@ -12,7 +12,7 @@ namespace KaobareCamera
 		const int CameraIndex = 0;
 		const int CameraWidth = 640;
 		const int CameraHeight = 480;
-		const int CameraFps = 15;
+		const int CameraFps = 20;
 		const double MaskThreshold = 0.35;
 
 		public bool IsInDesignMode { get; set; }
@@ -57,7 +57,7 @@ namespace KaobareCamera
 				Debug.WriteLine($"FPS: {frameRate.ActualFps}");
 
 				var bgra = segmentation.RemoveBackground(frame, MaskThreshold);
-				uiDispatcher.Invoke(() => UpdateImage(bgra));
+				uiDispatcher.BeginInvoke(() => UpdateImage(bgra));
 			}
 		}
 

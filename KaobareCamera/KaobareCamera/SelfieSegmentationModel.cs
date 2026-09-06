@@ -17,8 +17,14 @@ public sealed class SelfieSegmentationModel : IDisposable
     {
         var options = new SessionOptions
         {
-            GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL
+            GraphOptimizationLevel = GraphOptimizationLevel.ORT_ENABLE_ALL,
+            IntraOpNumThreads = 1,
+            InterOpNumThreads = 1,
         };
+        // ワーカースレッドが推論完了後もビジースピンし続けてCPUを消費するのを防ぐため、
+        // スピン待機を無効化してブロッキング待機に切り替える。
+        options.AddSessionConfigEntry("session.intra_op.allow_spinning", "0");
+        options.AddSessionConfigEntry("session.inter_op.allow_spinning", "0");
 
         _session = new InferenceSession(modelPath, options);
         _inputName = _session.InputMetadata.Keys.First();
