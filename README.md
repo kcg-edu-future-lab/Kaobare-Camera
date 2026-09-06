@@ -15,6 +15,7 @@
   - [.NET 10.0](https://dotnet.microsoft.com/ja-jp/download/dotnet/10.0/runtime) or later
 
 ## Release Notes
+- **v1.0.6** CPU 使用率を改善。
 - **v1.0.5** The first release.
 
 ## Third-Party Libraries
